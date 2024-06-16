@@ -42,7 +42,7 @@ spec:
         attributes:
           - action: upsert
             key: service.name
-            value: kong
+            value: kong-http-logs
     exporters:
       debug: {}
       otlp/jaeger:
