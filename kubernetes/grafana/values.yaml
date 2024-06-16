@@ -1,0 +1,58 @@
+env:
+  GF_AUTH_ANONYMOUS_ENABLED: true
+  GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+  GF_AUTH_DISABLE_LOGIN_FORM: true
+  GF_USERS_DEFAULT_THEME: light
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+    - name: 'default'
+      orgId: 1
+      folder: ''
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/default
+dashboards: 
+  default:
+    kong:
+      gnetId: 7424
+      revision: 11
+      # url: https://grafana.com./api/dashboards/7424/revisions/11/download
+      datasource: Prometheus
+    otel-collector:
+      gnetId: 15983
+      revision: 23
+      # url: https://grafana.com./api/dashboards/15983/revisions/23/download
+      datasource: Prometheus
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Loki
+      type: loki
+      url: http://loki.monitoring.svc:3100
+      access: proxy
+      isDefault: false
+      jsonData:
+        derivedFields:
+          - datasourceUid: Jaeger
+            matcherType: label
+            matcherRegex: trace_id
+            name: "TraceID"
+            url: "$${__value.raw}"
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-server.monitoring.svc
+      access: proxy
+      isDefault: true
+    - name: Jaeger
+      type: jaeger
+      url: http://jaeger-query.monitoring.svc:16686
+      access: proxy
+      isDefault: false
+      jsonData:
+        tracesToLogs:
+          datasourceUid: Loki

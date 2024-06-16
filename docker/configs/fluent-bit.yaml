@@ -1,0 +1,19 @@
+service:
+  flush:       1
+  log_level:   info
+pipeline:
+  inputs:
+    - name: http
+      tag: kong_http_log
+      port: 8080
+  outputs:
+    - name: opentelemetry
+      match: kong_http_log
+      host: otel-collector
+      port: 4318
+      logs_uri: /v1/logs
+      log_response_payload: true
+      tls: off
+      logs_body_key: ${message}
+      logs_trace_id_message_key: traceid
+      logs_span_id_message_key: spanid

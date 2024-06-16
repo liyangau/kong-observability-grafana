@@ -1,0 +1,40 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - name: httpbin-svc
+    url: https://httpbin.org
+    routes:
+    - name: httpbin-route
+      paths:
+      - /bin
+  - name: hotod-svc
+    url: http://hotrod:8080
+    routes:
+    - name: hotod-route
+      paths:
+      - /
+
+plugins:
+- name: http-log
+  config:
+    custom_fields_by_lua:
+      traceid: |
+        local h = kong.request.get_header('traceparent')
+        return h:match("%-([a-f0-9]+)%-[a-f0-9]+%-")
+      spanid: |
+        local h = kong.request.get_header('traceparent')
+        return h:match("%-[a-f0-9]+%-([a-f0-9]+)%-")
+    http_endpoint: http://fluentbit:8080
+- config:
+    bandwidth_metrics: true
+    latency_metrics: true
+    per_consumer: true
+    status_code_metrics: true
+    upstream_health_metrics: true
+  name: prometheus
+- config:
+    endpoint: http://otel-collector:4318/v1/traces
+    resource_attributes:
+      service.name: kong-otel-plugin
+  name: opentelemetry

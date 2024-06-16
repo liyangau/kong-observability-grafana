@@ -1,0 +1,49 @@
+extraPorts:
+  - port: 8080
+    containerPort: 8080
+    protocol: TCP
+    name: tcp
+config:
+  inputs: |
+    [INPUT]
+        Name tail
+        Path /var/log/containers/*.log
+        multiline.parser docker, cri
+        Tag kube.*
+        Mem_Buf_Limit 5MB
+        Skip_Long_Lines On
+
+    [INPUT]
+        name http
+        tag kong_http_log
+        listen 0.0.0.0
+        port 8080
+  filters: |
+    [FILTER]
+        Name kubernetes
+        Match kube.*
+        Merge_Log On
+        Keep_Log Off
+        K8S-Logging.Parser On
+        K8S-Logging.Exclude On
+
+  outputs: |
+    [OUTPUT]
+        Name                 opentelemetry
+        Match                kong_http_log
+        Host                 otel-collector.monitoring.svc
+        Port                 4318
+        Logs_uri             /v1/logs
+        Log_response_payload True
+        Tls                  off
+        logs_body_key $message
+        logs_trace_id_message_key traceid
+        logs_span_id_message_key spanid
+
+    [OUTPUT]
+        name                   loki
+        match                  kube.*
+        labels                 job=fluentbit
+        Host                   loki.monitoring.svc
+        Port                   3100
+        auto_kubernetes_labels on

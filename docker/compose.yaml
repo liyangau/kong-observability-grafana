@@ -1,0 +1,93 @@
+services:
+  kong:
+    image: kong:3.7
+    container_name: kong
+    volumes:
+      - ./configs/kong.yaml:/config/kong.yaml
+    environment:
+      - KONG_DATABASE=off
+      - KONG_DECLARATIVE_CONFIG=/config/kong.yaml
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001
+      - KONG_ADMIN_GUI_LISTEN=0.0.0.0:8002
+      - KONG_PROXY_LISTEN=0.0.0.0:8000
+      - KONG_STATUS_LISTEN=0.0.0.0:8100
+      - KONG_TRACING_INSTRUMENTATIONS=all
+      - KONG_TRACING_SAMPLING_RATE=1.0
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+      - "8002:8002"
+    networks:
+      - kong-obs
+  fluentbit:
+    image: fluent/fluent-bit:3.0.6
+    container_name: fluentbit
+    command:
+      - --config=/fluent-bit/etc/fluent-bit.yaml
+    networks:
+      - kong-obs
+    volumes:
+      - ./configs/fluent-bit.yaml:/fluent-bit/etc/fluent-bit.yaml
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.101.0
+    container_name: otel-collector
+    networks:
+      - kong-obs
+    volumes:
+      - ./configs/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+  jaeger:
+    image: jaegertracing/all-in-one:1.57
+    container_name: jaeger
+    ports:
+      - "16686:16686"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    networks:
+      - kong-obs
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --enable-feature=otlp-write-receiver
+    ports:
+      - "9090:9090"
+    sysctls:
+      net.core.somaxconn: 511
+    volumes:
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - kong-obs
+  loki:
+    image: grafana/loki:3.0.0
+    container_name: loki
+    command: ["-config.file=/mnt/config/loki-config.yaml"]
+    volumes:
+      - ./configs/loki-config.yaml:/mnt/config/loki-config.yaml
+    networks:
+      - kong-obs
+  grafana:
+    image: grafana/grafana-oss:11.0.0
+    container_name: grafana
+    environment:
+      - GF_USERS_DEFAULT_THEME=light
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    volumes:
+      - ./configs/grafana/datasources:/etc/grafana/provisioning/datasources/
+      - ./configs/grafana/dashboards:/etc/grafana/provisioning/dashboards/
+    ports:
+      - "3000:3000"
+    networks:
+      - kong-obs
+  hotrod:
+    image: jaegertracing/example-hotrod:1.57
+    container_name: hotrod
+    command: ["all"]
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+    networks:
+      - kong-obs
+networks:
+  kong-obs:

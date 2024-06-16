@@ -1,0 +1,16 @@
+gateway:
+  image:
+    repository: kong
+    tag: "3.7"
+  env:
+    router_flavor: "expressions"
+    tracing_instrumentations: "all"
+    tracing_sampling_rate: "1.0"
+  manager:
+    enabled: false
+controller:
+  ingressController:
+    env:
+      dump_config: "true"
+      dump_sensitive_config: "true"
+      log_level: debug
