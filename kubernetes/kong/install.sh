@@ -8,3 +8,7 @@ kubectl apply -f \
 kubectl apply -f "$SCRIPT_DIR/gatewayclass.yaml"
 kubectl apply -f "$SCRIPT_DIR/gateway.yaml"
 helm upgrade -i kong kong/ingress -n kong --values "$SCRIPT_DIR/values.yaml"
+
+if [[ -n $KONG_LICENSE_DATA ]];then
+  envsubst < "$SCRIPT_DIR/license.yaml" | kubectl apply -f -
+fi

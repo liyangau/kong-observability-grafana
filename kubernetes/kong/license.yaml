@@ -1,0 +1,6 @@
+apiVersion: configuration.konghq.com/v1alpha1
+kind: KongLicense
+metadata:
+  name: kong-license
+  namespace: kong
+rawLicenseString: '$KONG_LICENSE_DATA'

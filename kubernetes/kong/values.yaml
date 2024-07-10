@@ -1,6 +1,6 @@
 gateway:
   image:
-    repository: kong
+    repository: kong/kong-gateway
     tag: "3.7"
   env:
     router_flavor: "expressions"
@@ -13,4 +13,4 @@ controller:
     env:
       dump_config: "true"
       dump_sensitive_config: "true"
-      log_level: debug
+      log_level: info
