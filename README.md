@@ -36,6 +36,7 @@ Inside the `docker/` folder, run `docker compose up -d` to start all containers.
 Inside the `kubernetes/` folder, run `./install.sh` to deploy everything for you.
 
 - Kong is also running in dbless mode with Kong ingress controller with Gateway API enabled.
+- The script detects environment variable `KONG_LICENSE_DATA` and reates a `KongLicence` object accordingly.
 - I have to create `clusterrole` and `clusterrolebinding` for opentelemetry collector to scrape the Kong pod. If you have a better solution, please submit your PR.
 - Grafana dashboard password is also disabled. Please remove the `env` section of [values.yaml](https://github.com/liyangau/kong-observability-grafana/blob/main/kubernetes/grafana/values.yaml) if you need the log in page.
 
