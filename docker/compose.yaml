@@ -1,6 +1,6 @@
 services:
   kong:
-    image: kong:3.7
+    image: kong/kong-gateway:3.7
     container_name: kong
     volumes:
       - ./configs/kong.yaml:/config/kong.yaml
@@ -13,6 +13,7 @@ services:
       - KONG_STATUS_LISTEN=0.0.0.0:8100
       - KONG_TRACING_INSTRUMENTATIONS=all
       - KONG_TRACING_SAMPLING_RATE=1.0
+      - KONG_LICENSE_DATA
     ports:
       - "8000:8000"
       - "8001:8001"
@@ -20,7 +21,7 @@ services:
     networks:
       - kong-obs
   fluentbit:
-    image: fluent/fluent-bit:3.0.6
+    image: fluent/fluent-bit:3.1.2
     container_name: fluentbit
     command:
       - --config=/fluent-bit/etc/fluent-bit.yaml
