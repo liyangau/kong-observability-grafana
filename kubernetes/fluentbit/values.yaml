@@ -1,11 +1,12 @@
 image:
-  tag: 3.0.7
+  tag: 3.1.2
 
 extraPorts:
   - port: 8080
     containerPort: 8080
     protocol: TCP
     name: tcp
+
 config:
   inputs: |
     [INPUT]
@@ -23,6 +24,14 @@ config:
         port 8080
 
   filters: |
+
+    [FILTER]
+        name   grep
+        match  kube.*
+        Logical_Op and
+        Exclude log  /.*kong-ingress-controller.*/
+        Exclude log /.*status.*/
+
     [FILTER]
         Name kubernetes
         Match kube.*
