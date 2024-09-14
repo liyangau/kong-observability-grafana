@@ -14,10 +14,10 @@ print_message() {
 print_message "Adding Helm repositories..."
 
 helm repo add jetstack https://charts.jetstack.io
+helm repo add minio-operator https://operator.min.io
 helm repo add kong https://charts.konghq.com
 helm repo add fluent https://fluent.github.io/helm-charts
 helm repo add grafana https://grafana.github.io/helm-charts
-helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
 helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
@@ -27,11 +27,12 @@ apps=(
   "Kong:$SCRIPT_DIR/kong/install.sh"
   "cert-manager:$SCRIPT_DIR/cert-manager/install.sh"
   "fluentbit:$SCRIPT_DIR/fluentbit/install.sh"
-  "Opentelemetry Collector:$SCRIPT_DIR/otel-collector/install.sh"
+  "Minio:$SCRIPT_DIR/minio/install.sh"
+  "Tempo:$SCRIPT_DIR/tempo/install.sh"
   "Loki:$SCRIPT_DIR/loki/install.sh"
   "Grafana:$SCRIPT_DIR/grafana/install.sh"
   "Prometheus:$SCRIPT_DIR/prometheus/install.sh"
-  "Jaeger:$SCRIPT_DIR/jaeger/install.sh"
+  "Opentelemetry Collector:$SCRIPT_DIR/otel-collector/install.sh"
   "App hotrod:$SCRIPT_DIR/hotrod/install.sh"
   "App httpbin:$SCRIPT_DIR/httpbin/install.sh"
 )

@@ -1,7 +1,7 @@
 gateway:
   image:
     repository: kong/kong-gateway
-    tag: "3.7"
+    tag: "3.8"
   env:
     router_flavor: "expressions"
     tracing_instrumentations: "all"

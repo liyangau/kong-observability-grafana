@@ -1,0 +1,16 @@
+tenant:
+  image:
+    repository: quay.io/minio/minio
+    tag: RELEASE.2024-09-09T16-59-28Z
+  configSecret:
+    accessKey: tempo
+    secretKey: supersecret
+  pools:
+    - servers: 1
+      name: pool-0
+      volumesPerServer: 1
+      size: 2Gi
+  metrics:
+    enabled: true
+  buckets:
+    - name: tempo-traces

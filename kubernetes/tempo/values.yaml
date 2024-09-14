@@ -1,0 +1,17 @@
+tempo:
+  image:
+    registry: docker.io
+    repository: grafana/tempo
+    tag: "2.6.0"
+  server:
+    http_listen_port: 3100
+  storage:
+    trace:
+      backend: s3
+      s3:
+        access_key: tempo
+        secret_key: supersecret
+        bucket: tempo-traces
+        endpoint: minio.monitoring.svc:443
+        insecure: false
+        tls_insecure_skip_verify: true
