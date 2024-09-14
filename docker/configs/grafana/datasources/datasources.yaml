@@ -6,15 +6,18 @@ datasources:
     type: prometheus
     access: proxy
     url: http://prometheus:9090
-  - name: Jaeger
-    type: jaeger
+  - name: Tempo
+    type: tempo
     access: proxy
     editable: true
-    uid: jaeger
-    url: http://jaeger:16686
+    uid: tempo
+    url: http://tempo:3200
     jsonData:
-      tracesToLogs:
-        datasourceUid: loki
+      tracesToLogsV2:
+        datasourceUid: 'loki'
+        filterByTraceID: true
+        spanStartTimeShift: -5s
+        spanEndTimeShift: 5s
   - name: Loki
     type: loki
     access: proxy
@@ -23,7 +26,7 @@ datasources:
     url: http://loki:3100
     jsonData:
       derivedFields:
-        - datasourceUid: jaeger
+        - datasourceUid: tempo
           matcherType: label
           matcherRegex: trace_id
           name: "TraceID"

@@ -18,18 +18,21 @@ receivers:
         - targets: ['0.0.0.0:8888']
 processors:
   batch:
-  resource:
+  resource/kong-gateway:
     attributes:
       - action: upsert
         key: service.name
-        value: kong-http-logs
+        value: kong-gateway
+      - action: upsert
+        key: component.name
+        value: kong-http-log
 exporters:
-  otlp/jaeger:
-    endpoint: jaeger:4317
-    tls:
-      insecure: true
   prometheus:
     endpoint: "0.0.0.0:9090"
+  otlp/tempo:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
   otlphttp:
     endpoint: http://loki:3100/otlp
     encoding: json
@@ -42,7 +45,7 @@ service:
       receivers:
         - otlp
       processors:
-        - resource
+        - resource/kong-gateway
       exporters:
         - otlphttp
     metrics:
@@ -56,4 +59,4 @@ service:
         - otlp
       processors: []
       exporters:
-        - otlp/jaeger
+        - otlp/tempo
