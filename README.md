@@ -9,7 +9,7 @@ The solution
 **Backend**
 - Logs -> Loki
 - Metrics -> Prometheus
-- Traces -> Jaeger
+- Traces -> Tempo
 
 
 **App**
