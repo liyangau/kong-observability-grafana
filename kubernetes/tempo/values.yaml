@@ -2,7 +2,7 @@ tempo:
   image:
     registry: docker.io
     repository: grafana/tempo
-    tag: "2.6.0"
+    tag: "2.7.0"
   server:
     http_listen_port: 3100
   storage:

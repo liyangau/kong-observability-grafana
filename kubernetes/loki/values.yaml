@@ -1,5 +1,9 @@
 ---
 loki:
+  image:
+    registry: docker.io
+    repository: grafana/loki
+    tag: 3.3.2
   auth_enabled: false
   commonConfig:
     replication_factor: 1

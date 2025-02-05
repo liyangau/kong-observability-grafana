@@ -5,3 +5,7 @@ serverFiles:
         scrape_interval: 5s
         static_configs:
           - targets: ['otel-collector.monitoring.svc:9090']
+server:
+  image:
+    repository: quay.io/prometheus/prometheus
+    tag: "v3.1.0"

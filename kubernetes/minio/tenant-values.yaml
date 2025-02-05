@@ -1,7 +1,7 @@
 tenant:
   image:
     repository: quay.io/minio/minio
-    tag: RELEASE.2024-09-09T16-59-28Z
+    tag: RELEASE.2025-02-03T21-03-04Z
   configSecret:
     accessKey: tempo
     secretKey: supersecret

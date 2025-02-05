@@ -6,6 +6,7 @@ kubectl apply -f "$SCRIPT_DIR/namespace.yaml"
 
 helm upgrade -i \
   cert-manager jetstack/cert-manager \
+  --version v1.16.1 \
   --namespace cert-manager \
-  --set installCRDs=true \
-  --set "extraArgs={--feature-gates=ExperimentalGatewayAPISupport=true}"
+  --set crds.enabled=true \
+  --set config.enableGatewayAPI=true

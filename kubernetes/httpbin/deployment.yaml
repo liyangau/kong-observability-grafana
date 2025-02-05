@@ -16,5 +16,5 @@ spec:
         app: httpbin
     spec:
       containers:
-      - image: mccutchen/go-httpbin
+      - image: mccutchen/go-httpbin:v2.16.0
         name: httpbin

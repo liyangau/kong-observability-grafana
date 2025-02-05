@@ -7,7 +7,7 @@ kubectl apply -f \
   https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
 kubectl apply -f "$SCRIPT_DIR/gatewayclass.yaml"
 kubectl apply -f "$SCRIPT_DIR/gateway.yaml"
-helm upgrade -i kong kong/ingress -n kong --values "$SCRIPT_DIR/values.yaml"
+helm upgrade -i kong kong/ingress -n kong --values "$SCRIPT_DIR/values.yaml" --version v0.17.0
 
 if [[ -n $KONG_LICENSE_DATA ]];then
   envsubst < "$SCRIPT_DIR/license.yaml" | kubectl apply -f -

@@ -25,8 +25,9 @@ apply_crd_with_retries() {
 kubectl apply -f "$SCRIPT_DIR/namespace.yaml"
 
 helm upgrade -i \
-  --namespace monitoring \
   opentelemetry-operator open-telemetry/opentelemetry-operator \
+  --namespace monitoring \
+  --version v0.79.0 \
   --values "$SCRIPT_DIR/operator-values.yaml"
 
 kubectl rollout status \
@@ -36,4 +37,3 @@ kubectl rollout status \
 kubectl apply -f "$SCRIPT_DIR/clusterrole.yaml"
 kubectl apply -f "$SCRIPT_DIR/clusterrolebinding.yaml"
 apply_crd_with_retries "$SCRIPT_DIR/otel-collector.yaml"
-# kubectl apply -f "$SCRIPT_DIR/otel-collector.yaml"

@@ -6,6 +6,7 @@ kubectl apply -f "$SCRIPT_DIR/namespace.yaml"
 
 helm upgrade -i \
   prometheus prometheus-community/prometheus \
+  --version v27.3.0 \
   --namespace monitoring \
   --values "$SCRIPT_DIR/values.yaml" 
 

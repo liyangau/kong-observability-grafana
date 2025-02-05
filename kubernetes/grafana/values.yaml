@@ -6,7 +6,7 @@ env:
 image:
   registry: docker.io
   repository: grafana/grafana
-  tag: "11.0.0"
+  tag: "11.5.1"
 dashboardProviders:
   dashboardproviders.yaml:
     apiVersion: 1

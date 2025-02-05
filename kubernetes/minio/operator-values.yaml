@@ -1,6 +1,6 @@
 operator:
   image:
     repository: quay.io/minio/operator
-    tag: v6.0.3
+    tag: v7.0.0
     pullPolicy: IfNotPresent
   replicaCount: 1
