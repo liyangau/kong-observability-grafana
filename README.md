@@ -11,26 +11,10 @@ The solution
 - Metrics -> Prometheus
 - Traces -> Tempo
 
-
 **App**
 - [fluentbit](https://www.fluentbit.io/)
 - Httpbin
 - [Hotrod](https://github.com/jaegertracing/jaeger/tree/main/examples/hotrod)
-
-### Docker
-
-Inside the `docker/` folder, run `docker compose up -d` to start all containers. 
-
-- Kong is running in dbless mode and kong config is [kong.yaml](https://github.com/liyangau/kong-observability-grafana/blob/main/docker/configs/kong.yaml).
-- Use Kong Gateway image and apply the license from environment variable `KONG_LICENSE_DATA` on host machine. If this is not set, Kong gateway image will run in free mode.
-- I disabled Grafana password. To enable password login, simply remove below environment variables from [compose.yaml](https://github.com/liyangau/kong-observability-grafana/blob/main/docker/compose.yaml) file.
-  ```yaml
-      environment:
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-      - GF_AUTH_DISABLE_LOGIN_FORM=true
-  ```
-- All three datasources and two dashboard are pre-configured. If you change the service name on the compose file, please update the the files in `grafana/` folder.
 
 ### Kubernetes
 
