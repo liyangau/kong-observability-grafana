@@ -6,5 +6,5 @@ kubectl apply -f "$SCRIPT_DIR/namespace.yaml"
 helm upgrade -i \
   grafana grafana/grafana \
   --namespace monitoring \
-  --version v8.9.0 \
+  --version v9.2.7 \
   --values "$SCRIPT_DIR/values.yaml"

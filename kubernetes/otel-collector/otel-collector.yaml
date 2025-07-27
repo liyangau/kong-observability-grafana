@@ -4,6 +4,7 @@ metadata:
   name: otel
   namespace: monitoring
 spec:
+  image: otel/opentelemetry-collector-contrib:0.129.1
   config:
     receivers:
       otlp:
@@ -49,10 +50,6 @@ spec:
               - source_labels: [ __meta_kubernetes_pod_name ]
                 action: replace
                 target_label: instance
-            - job_name: 'otel-collector'
-              scrape_interval: 5s
-              static_configs:
-              - targets: ['0.0.0.0:8888']
     processors:
       batch: {}
       resource/kong-gateway:
@@ -76,10 +73,8 @@ spec:
         encoding: json
     service:
       telemetry:
-        metrics:
-          address: ":8888"
         logs:
-          level: "debug"
+          level: "info"
       pipelines:
         logs:
           receivers:

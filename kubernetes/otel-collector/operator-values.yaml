@@ -1,4 +1,7 @@
 manager:
-  collectorImage:
-    repository: "otel/opentelemetry-collector-contrib"
-    tag: 0.119.0
+  image:
+    repository: "otel/opentelemetry-operator"
+    tag: 0.129.1
+admissionWebhooks:
+  certManager:
+    enabled: true

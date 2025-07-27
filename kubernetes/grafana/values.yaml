@@ -6,7 +6,7 @@ env:
 image:
   registry: docker.io
   repository: grafana/grafana
-  tag: "11.5.1"
+  tag: "12.0.2"
 dashboardProviders:
   dashboardproviders.yaml:
     apiVersion: 1
@@ -25,11 +25,6 @@ dashboards:
       gnetId: 7424
       revision: 11
       # url: https://grafana.com./api/dashboards/7424/revisions/11/download
-      datasource: Prometheus
-    otel-collector:
-      gnetId: 15983
-      revision: 23
-      # url: https://grafana.com./api/dashboards/15983/revisions/23/download
       datasource: Prometheus
     kong-ingress-controller:
       json: |

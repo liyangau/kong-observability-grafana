@@ -11,8 +11,8 @@ apply_crd_with_retries() {
 
   until [ "$attempt" -gt "$max_attempts" ]; do
     kubectl apply -f "$crd_file" && success=true && break
-    echo "Attempt $attempt/$max_attempts to apply CRD $crd_file failed. Retrying in 5 seconds..."
-    sleep 5
+    echo "Attempt $attempt/$max_attempts to apply CRD $crd_file failed. Retrying in 10 seconds..."
+    sleep 30
     attempt=$(( attempt + 1 ))
   done
 
@@ -27,7 +27,7 @@ kubectl apply -f "$SCRIPT_DIR/namespace.yaml"
 helm upgrade -i \
   opentelemetry-operator open-telemetry/opentelemetry-operator \
   --namespace monitoring \
-  --version v0.79.0 \
+  --version v0.90.4 \
   --values "$SCRIPT_DIR/operator-values.yaml"
 
 kubectl rollout status \
