@@ -26,3 +26,13 @@ Inside the `kubernetes/` folder, run `./install.sh` to deploy everything for you
 - Grafana dashboard password is also disabled. Please remove the `env` section of [values.yaml](https://github.com/liyangau/kong-observability-grafana/blob/main/kubernetes/grafana/values.yaml) if you need the log in page.
 
 Detail explaination of the solution can be found on this [blog post](https://tech.aufomm.com/kong-observability-with-grafana-a-unified-view-for-logs-metrics-and-traces).
+
+### Auto Instrumentation
+
+OpenTelemetry Collector Operator supports [Zero-code Instrumentation](https://opentelemetry.io/docs/zero-code/). From high level, it works as below.
+
+![](assets/auto-instrumentation.png)
+
+I have added my `order tracking` app as a demo. With no manual instrumentation, the otel operator injects python agent packages to my code.  Based on the libraries that I use, this agent primarily uses monkey patching to modify library functions at runtime. For more information, please refer to [official doc](https://opentelemetry.io/docs/zero-code/python/).
+
+Please note I also enable otel logging by setting `OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true` environment variable on [auto-instrumentation.yaml](kubernetes/orders/auto-instrumentation.yaml).
