@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-tracking-backend-svc
+  namespace: apis
+spec:
+  ports:
+    - appProtocol: http
+      name: http
+      port: 8000
+      targetPort: 8000
+  selector:
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/name: order-tracking
+    app.kubernetes.io/part-of: order-tracking
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-tracking-customers-svc
+  namespace: apis
+spec:
+  ports:
+    - appProtocol: http
+      name: http
+      port: 8001
+      targetPort: 8001
+  selector:
+    app.kubernetes.io/component: customers
+    app.kubernetes.io/name: order-tracking
+    app.kubernetes.io/part-of: order-tracking
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-tracking-frontend-svc
+  namespace: apis
+spec:
+  ports:
+    - appProtocol: http
+      name: http
+      port: 3000
+      targetPort: 3000
+  selector:
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/name: order-tracking
+    app.kubernetes.io/part-of: order-tracking
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-tracking-products-svc
+  namespace: apis
+spec:
+  ports:
+    - appProtocol: http
+      name: http
+      port: 8002
+      targetPort: 8002
+  selector:
+    app.kubernetes.io/component: products
+    app.kubernetes.io/name: order-tracking
+    app.kubernetes.io/part-of: order-tracking

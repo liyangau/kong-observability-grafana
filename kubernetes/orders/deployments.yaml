@@ -1,0 +1,151 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-tracking-backend
+  namespace: apis
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: backend
+      app.kubernetes.io/name: order-tracking
+      app.kubernetes.io/part-of: order-tracking
+  template:
+    metadata:
+      annotations:
+        instrumentation.opentelemetry.io/inject-python: "python-instrumentation"
+      labels:
+        app.kubernetes.io/component: backend
+        app.kubernetes.io/name: order-tracking
+        app.kubernetes.io/part-of: order-tracking
+    spec:
+      containers:
+        - env:
+            - name: DATABASE_URL
+              value: /data/orders.db
+            - name: CUSTOMERS_API_URL
+              value: http://order-tracking-customers-svc.apis.svc.cluster.local:8001
+            - name: PRODUCTS_API_URL
+              value: http://order-tracking-products-svc.apis.svc.cluster.local:8002
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: LOG_LEVEL
+              value: INFO
+            - name: PORT
+              value: "8000"
+          image: fomm/order-tracking-backend:1.0.3
+          name: backend
+          ports:
+            - containerPort: 8000
+              name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-tracking-customers
+  namespace: apis
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: customers
+      app.kubernetes.io/name: order-tracking
+      app.kubernetes.io/part-of: order-tracking
+  template:
+    metadata:
+      annotations:
+        instrumentation.opentelemetry.io/inject-python: "python-instrumentation"
+      labels:
+        app.kubernetes.io/component: customers
+        app.kubernetes.io/name: order-tracking
+        app.kubernetes.io/part-of: order-tracking
+    spec:
+      containers:
+        - env:
+            - name: DATABASE_URL
+              value: /data/customers.db
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: LOG_LEVEL
+              value: INFO
+            - name: PORT
+              value: "8001"
+          image: fomm/order-tracking-customers:1.0.3
+          name: customers
+          ports:
+            - containerPort: 8001
+              name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-tracking-frontend
+  namespace: apis
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: frontend
+      app.kubernetes.io/name: order-tracking
+      app.kubernetes.io/part-of: order-tracking
+  template:
+    metadata:
+      annotations:
+        instrumentation.opentelemetry.io/inject-python: "python-instrumentation"
+      labels:
+        app.kubernetes.io/component: frontend
+        app.kubernetes.io/name: order-tracking
+        app.kubernetes.io/part-of: order-tracking
+    spec:
+      containers:
+        - env:
+            - name: API_BASE_URL
+              value: http://order-tracking-backend-svc.apis.svc.cluster.local:8000
+            - name: CUSTOMERS_API_URL
+              value: http://order-tracking-customers-svc.apis.svc.cluster.local:8001
+            - name: PRODUCTS_API_URL
+              value: http://order-tracking-products-svc.apis.svc.cluster.local:8002
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: LOG_LEVEL
+              value: INFO
+            - name: PORT
+              value: "3000"
+          image: fomm/order-tracking-frontend:1.0.3
+          name: frontend
+          ports:
+            - containerPort: 3000
+              name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-tracking-products
+  namespace: apis
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: products
+      app.kubernetes.io/name: order-tracking
+      app.kubernetes.io/part-of: order-tracking
+  template:
+    metadata:
+      annotations:
+        instrumentation.opentelemetry.io/inject-python: "python-instrumentation"
+      labels:
+        app.kubernetes.io/component: products
+        app.kubernetes.io/name: order-tracking
+        app.kubernetes.io/part-of: order-tracking
+    spec:
+      containers:
+        - env:
+            - name: DATABASE_URL
+              value: /data/products.db
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: LOG_LEVEL
+              value: INFO
+            - name: PORT
+              value: "8002"
+          image: fomm/order-tracking-products:1.0.3
+          name: products
+          ports:
+            - containerPort: 8002
+              name: http

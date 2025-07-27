@@ -33,8 +33,8 @@ apps=(
   "Grafana:$SCRIPT_DIR/grafana/install.sh"
   "Prometheus:$SCRIPT_DIR/prometheus/install.sh"
   "Opentelemetry Collector:$SCRIPT_DIR/otel-collector/install.sh"
-  "App hotrod:$SCRIPT_DIR/hotrod/install.sh"
   "App httpbin:$SCRIPT_DIR/httpbin/install.sh"
+  "App httpbin:$SCRIPT_DIR/orders/install.sh"
 )
 
 # Iterate through the applications array and install each one in order

@@ -1,0 +1,19 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: python-instrumentation
+  namespace: apis
+spec:
+  exporter:
+    endpoint: http://otel-collector.monitoring.svc:4318
+  propagators:
+    - tracecontext
+    - baggage
+  python:
+    env:
+      - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+        value: "true"
+    image: otel/autoinstrumentation-python:0.55b1
+  sampler:
+    argument: "1"
+    type: parentbased_traceidratio
