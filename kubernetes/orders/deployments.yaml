@@ -32,7 +32,7 @@ spec:
               value: INFO
             - name: PORT
               value: "8000"
-          image: fomm/order-tracking-backend:1.0.3
+          image: fomm/order-tracking-backend:1.0.4
           name: backend
           ports:
             - containerPort: 8000
@@ -68,7 +68,7 @@ spec:
               value: INFO
             - name: PORT
               value: "8001"
-          image: fomm/order-tracking-customers:1.0.3
+          image: fomm/order-tracking-customers:1.0.4
           name: customers
           ports:
             - containerPort: 8001
@@ -108,7 +108,7 @@ spec:
               value: INFO
             - name: PORT
               value: "3000"
-          image: fomm/order-tracking-frontend:1.0.3
+          image: fomm/order-tracking-frontend:1.0.4
           name: frontend
           ports:
             - containerPort: 3000
@@ -144,7 +144,7 @@ spec:
               value: INFO
             - name: PORT
               value: "8002"
-          image: fomm/order-tracking-products:1.0.3
+          image: fomm/order-tracking-products:1.0.4
           name: products
           ports:
             - containerPort: 8002

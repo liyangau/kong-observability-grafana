@@ -27,7 +27,7 @@ kubectl apply -f "$SCRIPT_DIR/namespace.yaml"
 helm upgrade -i \
   opentelemetry-operator open-telemetry/opentelemetry-operator \
   --namespace monitoring \
-  --version v0.90.4 \
+  --version v0.92.5 \
   --values "$SCRIPT_DIR/operator-values.yaml"
 
 kubectl rollout status \

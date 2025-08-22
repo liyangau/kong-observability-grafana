@@ -13,5 +13,3 @@ helm upgrade -i \
 kubectl rollout status \
   --namespace monitoring \
   statefulset tempo --timeout=60s
-
-kubectl apply -f "$SCRIPT_DIR/opentelemetry-plugin.yaml"
