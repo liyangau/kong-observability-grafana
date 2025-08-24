@@ -1,6 +1,6 @@
 services:
   kong:
-    image: kong/kong-gateway:3.7
+    image: kong/kong-gateway:3.11
     container_name: kong
     volumes:
       - ./configs/kong.yaml:/config/kong.yaml
@@ -21,7 +21,7 @@ services:
     networks:
       - kong-obs
   fluentbit:
-    image: fluent/fluent-bit:3.1.2
+    image: fluent/fluent-bit:3.2.10
     container_name: fluentbit
     command:
       - --config=/fluent-bit/etc/fluent-bit.yaml
@@ -30,14 +30,14 @@ services:
     volumes:
       - ./configs/fluent-bit.yaml:/fluent-bit/etc/fluent-bit.yaml
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.101.0
+    image: otel/opentelemetry-collector-contrib:0.132.0
     container_name: otel-collector
     networks:
       - kong-obs
     volumes:
       - ./configs/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
   jaeger:
-    image: jaegertracing/all-in-one:1.57
+    image: jaegertracing/all-in-one:1.72.0
     container_name: jaeger
     ports:
       - "16686:16686"
@@ -46,7 +46,7 @@ services:
     networks:
       - kong-obs
   prometheus:
-    image: prom/prometheus:v2.52.0
+    image: prom/prometheus:v3.5.0
     container_name: prometheus
     command:
       - --config.file=/etc/prometheus/prometheus.yml
@@ -60,7 +60,7 @@ services:
     networks:
       - kong-obs
   loki:
-    image: grafana/loki:3.0.0
+    image: grafana/loki:3.5.3
     container_name: loki
     command: ["-config.file=/mnt/config/loki-config.yaml"]
     volumes:
@@ -68,7 +68,7 @@ services:
     networks:
       - kong-obs
   grafana:
-    image: grafana/grafana-oss:11.0.0
+    image: grafana/grafana-oss:11.5.8
     container_name: grafana
     environment:
       - GF_USERS_DEFAULT_THEME=light
@@ -83,7 +83,7 @@ services:
     networks:
       - kong-obs
   hotrod:
-    image: jaegertracing/example-hotrod:1.57
+    image: jaegertracing/example-hotrod:1.72.0
     container_name: hotrod
     command: ["all"]
     environment:
