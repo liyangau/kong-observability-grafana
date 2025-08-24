@@ -5,3 +5,6 @@ serverFiles:
         scrape_interval: 5s
         static_configs:
           - targets: ['otel-collector.monitoring.svc:9090']
+server:
+  image:
+    tag: "v3.5.0"
