@@ -39,7 +39,13 @@ exporters:
 service:
   telemetry:
     metrics:
-      address: ":8888"
+      level: normal
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: "0.0.0.0"
+                port: 8888
   pipelines:
     logs:
       receivers:
