@@ -5,7 +5,7 @@ env:
   GF_USERS_DEFAULT_THEME: light
 image:
   repository: grafana/grafana
-  tag: "11.5.8"
+  tag: "11.6.5"
 dashboardProviders:
   dashboardproviders.yaml:
     apiVersion: 1
