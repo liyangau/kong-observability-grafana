@@ -21,10 +21,18 @@ plugins:
     custom_fields_by_lua:
       traceid: |
         local h = kong.request.get_header('traceparent')
-        return h:match("%-([a-f0-9]+)%-[a-f0-9]+%-")
+        if h then
+          return h:match("%-([a-f0-9]+)%-[a-f0-9]+%-")
+        else
+          return nil
+        end
       spanid: |
         local h = kong.request.get_header('traceparent')
-        return h:match("%-[a-f0-9]+%-([a-f0-9]+)%-")
+        if h then
+          return h:match("%-[a-f0-9]+%-([a-f0-9]+)%-")
+        else
+          return nil
+        end
     http_endpoint: http://fluentbit:8080
 - config:
     bandwidth_metrics: true
@@ -34,7 +42,7 @@ plugins:
     upstream_health_metrics: true
   name: prometheus
 - config:
-    endpoint: http://otel-collector:4318/v1/traces
+    traces_endpoint: http://otel-collector:4318/v1/traces
     resource_attributes:
       service.name: kong-otel-plugin
   name: opentelemetry
